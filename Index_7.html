@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ColorOS 17 | Community Feedback Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--purple:#7046c9;--deep:#21183f;--pink:#e68cb8;--orange:#ff986a;--text:#28223b;--muted:#817a91;--surface:rgba(255,255,255,.78)}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{min-height:100vh;font-family:Inter,sans-serif;color:var(--text);background:radial-gradient(ellipse at 5% 10%,#e3b5f5 0,transparent 40%),radial-gradient(ellipse at 95% 15%,#ffb99e 0,transparent 38%),radial-gradient(ellipse at 70% 95%,#a7a1ef 0,transparent 45%),linear-gradient(140deg,#eee7ff,#fff0eb);padding:24px 16px 40px}
+    .container{width:100%;max-width:680px;margin:auto}
+    .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding:0 5px}
+    .brand{font-size:13px;font-weight:800;letter-spacing:1px;color:var(--deep)}
+    .brand span{color:var(--purple)}
+    .version{font-size:11px;color:#6046a5;background:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.8);padding:8px 12px;border-radius:30px;font-weight:700}
+    .hero{position:relative;overflow:hidden;border-radius:28px;padding:36px 28px 30px;color:white;background:linear-gradient(125deg,#24164c 0%,#5940a0 48%,#b05d9d 78%,#e98579 100%);box-shadow:0 18px 45px rgba(68,43,116,.20);margin-bottom:22px}
+    .hero:before{content:"";position:absolute;width:260px;height:260px;right:-85px;top:-115px;border-radius:50%;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);box-shadow:0 0 60px rgba(255,255,255,.12)}
+    .hero:after{content:"";position:absolute;width:130px;height:130px;right:40px;bottom:-90px;border-radius:50%;background:rgba(255,185,147,.32)}
+    .hero-content{position:relative;z-index:1}
+    .eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:.8;margin-bottom:15px}
+    .hero h1{font-size:clamp(36px,8vw,54px);line-height:1;letter-spacing:-2px;margin-bottom:12px;font-weight:800}
+    .hero h2{font-size:clamp(17px,4vw,22px);font-weight:600;margin-bottom:12px;color:#ffe1e9}
+    .hero p{max-width:440px;color:rgba(255,255,255,.82);font-size:13px;line-height:1.8}
+    .orb{position:absolute;right:34px;top:125px;width:68px;height:68px;border-radius:50%;background:linear-gradient(145deg,rgba(255,255,255,.7),rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.35);box-shadow:inset -8px -8px 20px rgba(255,255,255,.1),0 12px 30px rgba(0,0,0,.12)}
+    .category-panel{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+    .category-card{border:1px solid rgba(255,255,255,.8);background:rgba(255,255,255,.52);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);border-radius:17px;padding:17px 6px;text-align:center;cursor:pointer;transition:.2s ease;color:var(--text);font-family:inherit}
+    .category-card .emoji{display:block;font-size:23px;margin-bottom:9px}
+    .category-card strong{font-size:11px;display:block}
+    .category-card.active{background:linear-gradient(135deg,#7046c9,#a45eaf);color:white;border-color:transparent;box-shadow:0 8px 22px rgba(112,70,201,.25);transform:translateY(-2px)}
+    .form-card{background:var(--surface);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.9);border-radius:24px;padding:27px 23px;box-shadow:0 12px 35px rgba(74,53,114,.09)}
+    .form-heading{margin-bottom:23px}
+    .form-heading h3{font-size:21px;margin-bottom:7px;letter-spacing:-.5px}
+    .form-heading p{color:var(--muted);font-size:12px;line-height:1.6}
+    .field{margin-bottom:19px}
+    label{display:block;font-size:12px;font-weight:700;margin-bottom:9px;color:#453c59}
+    .required{color:#d65f88}
+    input,select,textarea{width:100%;border:1px solid #e7dfef;border-radius:12px;padding:14px;background:rgba(255,255,255,.85);color:var(--text);font-family:inherit;font-size:13px;outline:none;transition:.2s}
+    input:focus,select:focus,textarea:focus{border-color:#9569d3;box-shadow:0 0 0 3px rgba(149,105,211,.12)}
+    textarea{min-height:135px;resize:vertical;line-height:1.7}
+    input::placeholder,textarea::placeholder{color:#aaa3b6}
+    .hint{color:var(--muted);font-size:10px;margin-top:7px;line-height:1.5}
+    .submit-btn{width:100%;padding:16px;border:none;border-radius:13px;color:white;background:linear-gradient(110deg,#6740bb,#9c5eb2,#df817d);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(112,70,201,.22);transition:.2s}
+    .submit-btn:hover{filter:brightness(1.07);transform:translateY(-1px)}
+    .submit-btn:disabled{opacity:.6;cursor:wait;transform:none}
+    .footer{text-align:center;padding:23px 8px 0;color:#777087;font-size:11px;line-height:1.8}
+    .footer strong{color:#59458c}
+    .status{display:none;border-radius:13px;padding:16px;margin-bottom:20px;font-size:13px;line-height:1.6}
+    .status.success{display:block;background:#e5f6ed;color:#176e48;border:1px solid #bde8ce}
+    .status.error{display:block;background:#fff0f0;color:#ad4141;border:1px solid #ffd0d0}
+    .success-screen{display:none;text-align:center;padding:35px 15px}
+    .success-icon{width:68px;height:68px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;font-size:31px;color:white;background:linear-gradient(135deg,#6740bb,#df817d);box-shadow:0 8px 25px rgba(112,70,201,.2)}
+    .success-screen h3{font-size:23px;margin-bottom:9px}
+    .success-screen p{color:var(--muted);font-size:13px;line-height:1.7}
+    .ticket{margin:20px auto;padding:13px;max-width:240px;background:#f0eaff;color:#6343aa;border-radius:12px;font-weight:800;font-size:14px}
+    .again-btn{background:none;border:1px solid #a98bd8;color:#6949ae;border-radius:12px;padding:12px 20px;font-weight:700;font-family:inherit;cursor:pointer;margin-top:10px}
+    .hint.warn{color:#ad4141;font-weight:600}
+    .trap{position:absolute;left:-9999px;opacity:0;pointer-events:none}
+    @media(max-width:480px){body{padding:14px 12px 28px}.hero{padding:30px 21px;border-radius:23px}.form-card{padding:23px 17px}.orb{right:20px;width:45px;height:45px}.category-card{padding:14px 3px}.category-card strong{font-size:10px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important}}
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="topbar">
+      <div class="brand">realme <span>|</span> COMMUNITY</div>
+      <div class="version">COLOROS 17</div>
+    </header>
+
+    <section class="hero">
+      <div class="orb"></div>
+      <div class="hero-content">
+        <div class="eyebrow">Community Feedback Initiative</div>
+        <h1>ColorOS 17</h1>
+        <h2>Your Voice Matters!</h2>
+        <p>Have a question, feedback or an idea? Share it with us and help highlight what matters to the realme Community.</p>
+      </div>
+    </section>
+
+    <section class="category-panel">
+      <button class="category-card active" type="button" data-type="Question" onclick="selectType(this)"><span class="emoji">💬</span><strong>Question</strong></button>
+      <button class="category-card" type="button" data-type="Feedback" onclick="selectType(this)"><span class="emoji">✦</span><strong>Feedback</strong></button>
+      <button class="category-card" type="button" data-type="Suggestion" onclick="selectType(this)"><span class="emoji">💡</span><strong>Suggestion</strong></button>
+    </section>
+
+    <section class="form-card">
+      <div id="formSection">
+        <div class="form-heading">
+          <h3>Share Your Thoughts</h3>
+          <p>Your contribution helps us highlight important community questions and ideas.</p>
+        </div>
+        <div id="status" class="status" role="status" aria-live="polite"></div>
+
+        <form id="feedbackForm" onsubmit="handleSubmit(event)">
+          <input type="hidden" id="submissionType" value="Question">
+
+          <div class="field">
+            <label for="deviceModel">Device Model <span class="required">*</span></label>
+            <input id="deviceModel" type="text" placeholder="e.g. realme GT 7 Pro" maxlength="60" autocomplete="off" required>
+            <p class="hint" id="deviceHint">0 / 60</p>
+          </div>
+
+          <div class="field">
+            <label for="softwareVersion">Software Version <span class="required">*</span></label>
+            <input id="softwareVersion" type="text" placeholder="e.g. RMXxxxx_17.0.0.xxx" maxlength="50" autocomplete="off" required>
+            <p class="hint" id="versionHint">0 / 50</p>
+          </div>
+
+          <div class="field">
+            <label for="category">Related Category <span class="required">*</span></label>
+            <select id="category" required><option value="">Loading categories...</option></select>
+            <p class="hint">Select the feature or area related to your submission.</p>
+          </div>
+
+          <div class="field">
+            <label for="description" id="descLabel">Your Question <span class="required">*</span></label>
+            <textarea id="description" placeholder="Tell us what you'd like to ask, improve or suggest..." required></textarea>
+            <p class="hint" id="descHint">Please provide clear and relevant details. Links are not allowed.</p>
+          </div>
+
+          <div class="trap" aria-hidden="true">
+            <label for="website">Website</label>
+            <input id="website" type="text" tabindex="-1" autocomplete="off">
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn" disabled>Loading...</button>
+        </form>
+      </div>
+
+      <div id="successScreen" class="success-screen">
+        <div class="success-icon">✓</div>
+        <h3 id="thanksTitle">Thank You!</h3>
+        <p id="thanksMsg">Your contribution has been successfully submitted. We appreciate your effort in helping the community.</p>
+        <div class="ticket" id="ticketNumber"></div>
+        <p>Your voice makes a difference. 💜</p>
+        <button class="again-btn" onclick="resetForm()">Submit Another Contribution</button>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <strong>Your Questions. Your Ideas. Your Voice.</strong><br>
+      A realme Community initiative for ColorOS 17.<br>
+      Thank you for being part of the community. 💜
+    </footer>
+  </main>
+
+  <script>
+    let selectedType = "Question";
+    let submitting = false;
+    let cfg = { max: { device: 60, version: 50 }, minText: 10 };
+    let linkRe = null;
+    const BTN_TEXT = "Submit Contribution \u2192";
+
+    function rand() { return Math.random().toString(36).slice(2) + Date.now().toString(36); }
+    const clientId = (function () {
+      try {
+        let id = localStorage.getItem("cid");
+        if (!id) { id = rand(); localStorage.setItem("cid", id); }
+        return id;
+      } catch (e) { return rand(); }
+    })();
+
+    function $(id) { return document.getElementById(id); }
+    function hasLink(s) { return !!(linkRe && linkRe.test(s)); }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      ["deviceModel", "softwareVersion", "description"].forEach(function (id) {
+        $(id).addEventListener("input", updateHints);
+      });
+      google.script.run
+        .withSuccessHandler(applyConfig)
+        .withFailureHandler(function () {
+          showStatus("Unable to load the form. Please refresh the page.", "error");
+        })
+        .getFormConfig();
+    });
+
+    function applyConfig(config) {
+      cfg = config;
+      try { linkRe = new RegExp(config.linkPattern, "i"); } catch (e) { linkRe = null; }
+      $("deviceModel").maxLength = config.max.device;
+      $("softwareVersion").maxLength = config.max.version;
+      const select = $("category");
+      select.innerHTML = '<option value="">Select a category</option>';
+      config.categories.forEach(function (c) {
+        const o = document.createElement("option");
+        o.value = c; o.textContent = c;
+        select.appendChild(o);
+      });
+      $("submitBtn").disabled = false;
+      $("submitBtn").textContent = BTN_TEXT;
+      updateHints();
+    }
+
+    function updateHints() {
+      const d = $("deviceModel").value, v = $("softwareVersion").value, t = $("description").value;
+      const dh = $("deviceHint"), vh = $("versionHint"), th = $("descHint");
+      dh.textContent = hasLink(d) ? "Links are not allowed here." : d.length + " / " + cfg.max.device;
+      dh.className = "hint" + (hasLink(d) ? " warn" : "");
+      vh.textContent = hasLink(v) ? "Links are not allowed here." : v.length + " / " + cfg.max.version;
+      vh.className = "hint" + (hasLink(v) ? " warn" : "");
+      th.textContent = hasLink(t) ? "Please remove the link. Links are not allowed."
+                                  : "Please provide clear and relevant details. Links are not allowed.";
+      th.className = "hint" + (hasLink(t) ? " warn" : "");
+    }
+
+    const TYPE_TEXT = {
+      Question:   { label: "Your Question",   thanks: "Thank you for your question!",   msg: "We have received it and it will help highlight what matters to the realme Community." },
+      Feedback:   { label: "Your Feedback",   thanks: "Thank you for your feedback!",   msg: "We have received it. Your feedback helps shape what the community wants from ColorOS 17." },
+      Suggestion: { label: "Your Suggestion", thanks: "Thank you for your suggestion!", msg: "We have received it. Great ideas like yours help make ColorOS 17 better." }
+    };
+
+    function applyTypeLabels() {
+      $("descLabel").innerHTML = TYPE_TEXT[selectedType].label + ' <span class="required">*</span>';
+    }
+
+    function selectType(button) {
+      document.querySelectorAll(".category-card").forEach(function (card) {
+        card.classList.remove("active");
+      });
+      button.classList.add("active");
+      selectedType = button.dataset.type;
+      $("submissionType").value = selectedType;
+      const label = { Question: "Your Question", Feedback: "Your Feedback", Suggestion: "Your Suggestion" };
+      $("description").placeholder = "Write your " + selectedType.toLowerCase() + " here...";
+      document.querySelector(".form-heading h3").textContent = label[selectedType] + " Matters";
+      applyTypeLabels();
+    }
+
+    function showStatus(message, type) {
+      const status = $("status");
+      status.className = "status " + type;
+      status.textContent = message;
+      status.style.display = "block";
+      status.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function setBusy(busy) {
+      submitting = busy;
+      $("submitBtn").disabled = busy;
+      $("submitBtn").textContent = busy ? "Submitting..." : BTN_TEXT;
+    }
+
+    function handleSubmit(event) {
+      event.preventDefault();
+      if (submitting) return;
+
+      const data = {
+        type: selectedType,
+        device: $("deviceModel").value.trim(),
+        version: $("softwareVersion").value.trim(),
+        category: $("category").value,
+        text: $("description").value.trim(),
+        clientId: clientId,
+        website: $("website").value
+      };
+
+      if (!data.device || !data.version || !data.category || !data.text) {
+        showStatus("Please complete all required fields.", "error"); return;
+      }
+      if (data.device.length > cfg.max.device || data.version.length > cfg.max.version) {
+        showStatus("Device model or version is too long.", "error"); return;
+      }
+      if (data.text.length < cfg.minText) {
+        showStatus("Please add a little more detail.", "error"); return;
+      }
+      if (hasLink(data.device) || hasLink(data.version) || hasLink(data.text)) {
+        showStatus("Please remove any links. They are not allowed here.", "error"); return;
+      }
+
+      setBusy(true);
+      $("status").style.display = "none";
+
+      google.script.run
+        .withSuccessHandler(function (res) {
+          setBusy(false);
+          if (res && res.ok) {
+            $("formSection").style.display = "none";
+            $("successScreen").style.display = "block";
+            $("thanksTitle").textContent = TYPE_TEXT[data.type].thanks;
+            $("thanksMsg").textContent = TYPE_TEXT[data.type].msg;
+            $("ticketNumber").textContent = "Question ID: " + res.id;
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          } else {
+            showStatus(res && res.error ? res.error : "Submission failed. Please try again.", "error");
+          }
+        })
+        .withFailureHandler(function () {
+          setBusy(false);
+          showStatus("Something went wrong. Your text is kept, please try again.", "error");
+        })
+        .submitEntry(data);
+    }
+
+    function resetForm() {
+      $("feedbackForm").reset();
+      $("formSection").style.display = "block";
+      $("successScreen").style.display = "none";
+      $("status").style.display = "none";
+      document.querySelectorAll(".category-card").forEach(function (card) {
+        card.classList.remove("active");
+      });
+      document.querySelector('.category-card[data-type="Question"]').classList.add("active");
+      selectedType = "Question";
+      $("submissionType").value = "Question";
+      document.querySelector(".form-heading h3").textContent = "Share Your Thoughts";
+      $("description").placeholder = "Tell us what you'd like to ask, improve or suggest...";
+      applyTypeLabels();
+      updateHints();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  </script>
+</body>
+</html>
