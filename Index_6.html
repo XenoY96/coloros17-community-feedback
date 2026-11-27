@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ColorOS 17 | Community Feedback Hub</title>
+  <style>
+    :root{--purple:#7046c9;--text:#202124;--muted:#5f6368;--line:#dadce0;--err:#d93025}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{min-height:100vh;font-family:Roboto,Arial,Helvetica,sans-serif;color:var(--text);background:#f1ecfa;padding:16px 12px 40px;line-height:1.5}
+    .container{width:100%;max-width:640px;margin:0 auto}
+    .card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:22px 24px;margin-bottom:12px}
+    .head{border-top:10px solid var(--purple);padding-top:20px;border-image:linear-gradient(90deg,#4b2fa3,#7046c9,#d96fa0,#ff986a) 1;border-radius:0 0 8px 8px}
+    .brand{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--muted);margin-bottom:10px}
+    .brand span{color:var(--purple)}
+    .head h1{font-size:30px;font-weight:500;line-height:1.2;margin-bottom:4px}
+    .head h2{font-size:17px;font-weight:500;color:var(--purple);margin-bottom:12px}
+    .head p{font-size:14px;color:var(--muted)}
+    .req-note{font-size:13px;color:var(--err);margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+    .q-title{font-size:15px;font-weight:500;margin-bottom:14px}
+    .req{color:var(--err)}
+    .radio{display:flex;align-items:center;gap:12px;padding:8px 0;cursor:pointer;font-size:14px}
+    .radio input{width:18px;height:18px;accent-color:var(--purple);flex:none}
+    input[type=text],select,textarea{width:100%;border:none;border-bottom:1px solid var(--line);border-radius:0;padding:8px 0;font-family:inherit;font-size:14px;color:var(--text);background:transparent;outline:none;transition:border-color .15s}
+    input[type=text]:focus,select:focus,textarea:focus{border-bottom:2px solid var(--purple);padding-bottom:7px}
+    select{padding:10px 0;cursor:pointer}
+    textarea{min-height:110px;resize:vertical;line-height:1.6}
+    ::placeholder{color:#80868b}
+    .hint{font-size:12px;color:var(--muted);margin-top:8px}
+    .hint.warn{color:var(--err);font-weight:500}
+    .status{display:none;border-radius:8px;padding:14px 16px;margin-bottom:12px;font-size:14px;background:#fce8e6;color:#a50e0e;border:1px solid #f6c5c0}
+    .actions{margin-top:4px}
+    .submit-btn{background:var(--purple);color:#fff;border:none;border-radius:6px;padding:11px 26px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer}
+    .submit-btn:hover{filter:brightness(1.08)}
+    .submit-btn:disabled{opacity:.55;cursor:default}
+    .success-screen{display:none}
+    .success-screen h3{font-size:22px;font-weight:500;margin-bottom:10px}
+    .success-screen p{font-size:14px;color:var(--muted)}
+    .ticket{display:inline-block;margin:16px 0 6px;padding:8px 14px;background:#f1ecfa;color:#5a37a8;border-radius:6px;font-weight:700;font-size:14px}
+    .again{display:inline-block;margin-top:14px;color:var(--purple);font-size:14px;cursor:pointer;background:none;border:none;font-family:inherit;padding:0;text-decoration:underline}
+    .footer{text-align:center;font-size:12px;color:var(--muted);padding:12px 8px 0}
+    .trap{position:absolute;left:-9999px;opacity:0;pointer-events:none}
+    @media(max-width:480px){.card{padding:18px 16px}.head h1{font-size:26px}}
+  </style>
+</head>
+<body>
+  <main class="container">
+
+    <div id="formSection">
+      <div class="card head">
+        <div class="brand">realme <span>|</span> COMMUNITY</div>
+        <h1>ColorOS 17</h1>
+        <h2>Your Voice Matters!</h2>
+        <p>Have a question, feedback or an idea? Share it with us and help highlight what matters to the realme Community.</p>
+        <p class="req-note">* Indicates required question</p>
+      </div>
+
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+
+      <form id="feedbackForm" onsubmit="handleSubmit(event)" novalidate>
+
+        <div class="card">
+          <div class="q-title">What would you like to share? <span class="req">*</span></div>
+          <label class="radio"><input type="radio" name="type" value="Question" checked onchange="selectType(this.value)"> Question</label>
+          <label class="radio"><input type="radio" name="type" value="Feedback" onchange="selectType(this.value)"> Feedback</label>
+          <label class="radio"><input type="radio" name="type" value="Suggestion" onchange="selectType(this.value)"> Suggestion</label>
+        </div>
+
+        <div class="card">
+          <label class="q-title" for="deviceModel">Device Model <span class="req">*</span></label>
+          <input id="deviceModel" type="text" placeholder="e.g. realme GT 7 Pro" maxlength="60" autocomplete="off">
+          <p class="hint" id="deviceHint">0 / 60</p>
+        </div>
+
+        <div class="card">
+          <label class="q-title" for="softwareVersion">Software Version <span class="req">*</span></label>
+          <input id="softwareVersion" type="text" placeholder="e.g. RMXxxxx_17.0.0.xxx" maxlength="50" autocomplete="off">
+          <p class="hint" id="versionHint">0 / 50</p>
+        </div>
+
+        <div class="card">
+          <label class="q-title" for="category">Related Category <span class="req">*</span></label>
+          <select id="category"><option value="">Loading categories...</option></select>
+        </div>
+
+        <div class="card">
+          <label class="q-title" for="description" id="descLabel">Your Question <span class="req">*</span></label>
+          <textarea id="description" placeholder="Type your answer here"></textarea>
+          <p class="hint" id="descHint">Please be clear and specific. Links are not allowed.</p>
+        </div>
+
+        <div class="trap" aria-hidden="true">
+          <label for="website">Website</label>
+          <input id="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="submit-btn" id="submitBtn" disabled>Loading...</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="successScreen" class="card head success-screen">
+      <div class="brand">realme <span>|</span> COMMUNITY</div>
+      <h3 id="thanksTitle">Thank you!</h3>
+      <p id="thanksMsg">Your response has been recorded.</p>
+      <div class="ticket" id="ticketNumber"></div>
+      <p>Your voice makes a difference. 💜</p>
+      <button class="again" type="button" onclick="resetForm()">Submit another response</button>
+    </div>
+
+    <footer class="footer">
+      Your Questions. Your Ideas. Your Voice.<br>
+      A realme Community initiative for ColorOS 17.
+    </footer>
+  </main>
+
+  <script>
+    let selectedType = "Question";
+    let submitting = false;
+    let cfg = { max: { device: 60, version: 50 }, minText: 10 };
+    let linkRe = null;
+    const BTN_TEXT = "Submit";
+
+    function rand() { return Math.random().toString(36).slice(2) + Date.now().toString(36); }
+    const clientId = (function () {
+      try {
+        let id = localStorage.getItem("cid");
+        if (!id) { id = rand(); localStorage.setItem("cid", id); }
+        return id;
+      } catch (e) { return rand(); }
+    })();
+
+    function $(id) { return document.getElementById(id); }
+    function hasLink(s) { return !!(linkRe && linkRe.test(s)); }
+
+    const TYPE_TEXT = {
+      Question:   { label: "Your Question",   thanks: "Thank you for your question!",   msg: "We have received it and it will help highlight what matters to the realme Community." },
+      Feedback:   { label: "Your Feedback",   thanks: "Thank you for your feedback!",   msg: "We have received it. Your feedback helps shape what the community wants from ColorOS 17." },
+      Suggestion: { label: "Your Suggestion", thanks: "Thank you for your suggestion!", msg: "We have received it. Great ideas like yours help make ColorOS 17 better." }
+    };
+
+    document.addEventListener("DOMContentLoaded", function () {
+      ["deviceModel", "softwareVersion", "description"].forEach(function (id) {
+        $(id).addEventListener("input", updateHints);
+      });
+      google.script.run
+        .withSuccessHandler(applyConfig)
+        .withFailureHandler(function () {
+          showStatus("Unable to load the form. Please refresh the page.");
+        })
+        .getFormConfig();
+    });
+
+    function applyConfig(config) {
+      cfg = config;
+      try { linkRe = new RegExp(config.linkPattern, "i"); } catch (e) { linkRe = null; }
+      $("deviceModel").maxLength = config.max.device;
+      $("softwareVersion").maxLength = config.max.version;
+      const select = $("category");
+      select.innerHTML = '<option value="">Choose</option>';
+      config.categories.forEach(function (c) {
+        const o = document.createElement("option");
+        o.value = c; o.textContent = c;
+        select.appendChild(o);
+      });
+      $("submitBtn").disabled = false;
+      $("submitBtn").textContent = BTN_TEXT;
+      updateHints();
+    }
+
+    function updateHints() {
+      const d = $("deviceModel").value, v = $("softwareVersion").value, t = $("description").value;
+      const dh = $("deviceHint"), vh = $("versionHint"), th = $("descHint");
+      dh.textContent = hasLink(d) ? "Links are not allowed here." : d.length + " / " + cfg.max.device;
+      dh.className = "hint" + (hasLink(d) ? " warn" : "");
+      vh.textContent = hasLink(v) ? "Links are not allowed here." : v.length + " / " + cfg.max.version;
+      vh.className = "hint" + (hasLink(v) ? " warn" : "");
+      th.textContent = hasLink(t) ? "Please remove the link. Links are not allowed."
+                                  : "Please be clear and specific. Links are not allowed.";
+      th.className = "hint" + (hasLink(t) ? " warn" : "");
+    }
+
+    function applyTypeLabels() {
+      $("descLabel").innerHTML = TYPE_TEXT[selectedType].label + ' <span class="req">*</span>';
+    }
+
+    function selectType(value) {
+      selectedType = value;
+      applyTypeLabels();
+    }
+
+    function showStatus(message) {
+      const status = $("status");
+      status.textContent = message;
+      status.style.display = "block";
+      status.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function setBusy(busy) {
+      submitting = busy;
+      $("submitBtn").disabled = busy;
+      $("submitBtn").textContent = busy ? "Submitting..." : BTN_TEXT;
+    }
+
+    function handleSubmit(event) {
+      event.preventDefault();
+      if (submitting) return;
+
+      const data = {
+        type: selectedType,
+        device: $("deviceModel").value.trim(),
+        version: $("softwareVersion").value.trim(),
+        category: $("category").value,
+        text: $("description").value.trim(),
+        clientId: clientId,
+        website: $("website").value
+      };
+
+      if (!data.device || !data.version || !data.category || !data.text) {
+        showStatus("Please complete all required questions."); return;
+      }
+      if (data.device.length > cfg.max.device || data.version.length > cfg.max.version) {
+        showStatus("Device model or version is too long."); return;
+      }
+      if (data.text.length < cfg.minText) {
+        showStatus("Please add a little more detail."); return;
+      }
+      if (hasLink(data.device) || hasLink(data.version) || hasLink(data.text)) {
+        showStatus("Please remove any links. They are not allowed here."); return;
+      }
+
+      setBusy(true);
+      $("status").style.display = "none";
+
+      google.script.run
+        .withSuccessHandler(function (res) {
+          setBusy(false);
+          if (res && res.ok) {
+            $("formSection").style.display = "none";
+            $("successScreen").style.display = "block";
+            $("thanksTitle").textContent = TYPE_TEXT[data.type].thanks;
+            $("thanksMsg").textContent = TYPE_TEXT[data.type].msg;
+            $("ticketNumber").textContent = "Question ID: " + res.id;
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          } else {
+            showStatus(res && res.error ? res.error : "Submission failed. Please try again.");
+          }
+        })
+        .withFailureHandler(function () {
+          setBusy(false);
+          showStatus("Something went wrong. Your text is kept, please try again.");
+        })
+        .submitEntry(data);
+    }
+
+    function resetForm() {
+      $("feedbackForm").reset();
+      selectedType = "Question";
+      applyTypeLabels();
+      $("formSection").style.display = "block";
+      $("successScreen").style.display = "none";
+      $("status").style.display = "none";
+      updateHints();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  </script>
+</body>
+</html>
